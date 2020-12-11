@@ -9,6 +9,7 @@ import store, { history } from '../redux'
 
 import Home from '../components/home'
 import DummyView from '../components/dummy-view'
+import MainComponent from '../components/main'
 import NotFound from '../components/404'
 
 import Startup from './startup'
@@ -72,7 +73,9 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route exact path="/" component={() => <DummyView />} />
+            <Route exact path="/" component={() => <MainComponent />} />
+            <Route exact path="/cart" component={() => <MainComponent />} />
+            <Route exact path="/logs" component={() => <MainComponent />} />
             <Route exact path="/dashboard" component={() => <Home />} />
             <PrivateRoute exact path="/hidden-route" component={() => <DummyView />} />
             <Route component={() => <NotFound />} />

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import express from 'express'
 import path from 'path'
 import cors from 'cors'
@@ -5,10 +7,13 @@ import bodyParser from 'body-parser'
 import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
+import axios from 'axios'
 
 import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
+
+const { readFile, writeFile, stat, unlink } = require('fs').promises
 
 const { default: Root } = require('../dist/assets/js/ssr/root.bundle')
 
@@ -26,6 +31,35 @@ const middleware = [
 ]
 
 middleware.forEach((it) => server.use(it))
+
+// ----------------------------Functions----------------------------------
+
+const getExchangeRates = async () => {
+  const rates = await axios
+    .get('https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR,CAD,RUB')
+    .then((res) => res.data.rates)
+  return rates
+}
+
+// ------------------------------APIs-------------------------------------
+
+server.get('/api/v1/data', (req, res) => {
+  readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' }).then((data) =>
+    res.json(JSON.parse(data))
+  )
+})
+
+server.get('/api/v1/exchange_rates', (req, res) => {
+  getExchangeRates().then((rates) => {
+    res.json({
+      EUR: rates.EUR,
+      CAD: rates.CAD,
+      RUB: rates.RUB
+    })
+  })
+})
+
+// -----------------------------------------------------------------------
 
 server.use('/api/', (req, res) => {
   res.status(404)
