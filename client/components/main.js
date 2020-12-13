@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { Route } from 'react-router-dom'
 
 import Head from './head'
 import Header from './header'
@@ -11,11 +9,10 @@ import Cart from './cart'
 const MainComponent = () => {
   return (
     <div>
-      <Head />
+      <Head title="Ecommerce Store" />
       <Header />
       <Route exact path="/" component={() => <Dummy />} />
       <Route exact path="/cart" component={() => <Cart />} />
-      <Route exact path="/logs" component={() => <Dummy />} />
     </div>
   )
 }

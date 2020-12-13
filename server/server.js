@@ -32,31 +32,42 @@ const middleware = [
 
 middleware.forEach((it) => server.use(it))
 
-// ----------------------------Functions----------------------------------
-
-const getExchangeRates = async () => {
-  const rates = await axios
-    .get('https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR,CAD,RUB')
-    .then((res) => res.data.rates)
-  return rates
-}
-
 // ------------------------------APIs-------------------------------------
 
 server.get('/api/v1/data', (req, res) => {
-  readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' }).then((data) =>
-    res.json(JSON.parse(data))
+  readFile(`${__dirname}/data/data.json`, { encoding: 'utf8' }).then((text) =>
+    res.json(JSON.parse(text))
   )
 })
 
 server.get('/api/v1/exchange_rates', (req, res) => {
-  getExchangeRates().then((rates) => {
-    res.json({
-      EUR: rates.EUR,
-      CAD: rates.CAD,
-      RUB: rates.RUB
+  axios
+    .get('https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR,CAD,RUB,USD')
+    .then(({ data }) => {
+      res.json(data.rates)
     })
-  })
+})
+
+server.get('/api/v1/logs', (req, res) => {
+  readFile(`${__dirname}/data/logs.json`, { encoding: 'utf8' }).then((data) =>
+    res.json(JSON.parse(data))
+  )
+})
+
+server.post('/api/v1/logs', (req, res) => {
+  readFile(`${__dirname}/data/logs.json`, { encoding: 'utf8' })
+    .then((data) => {
+      const logs = JSON.parse(data)
+      logs.push(req.body)
+      writeFile(`${__dirname}/data/logs.json`, JSON.stringify(logs), { encoding: 'utf8' })
+    })
+    .then(() => res.json({ status: 'ok' }))
+})
+
+server.delete('/api/v1/logs', (req, res) => {
+  writeFile(`${__dirname}/data/logs.json`, JSON.stringify([]), { encoding: 'utf8' }).then(() =>
+    res.json({ status: 'ok' })
+  )
 })
 
 // -----------------------------------------------------------------------

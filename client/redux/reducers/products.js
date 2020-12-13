@@ -11,8 +11,7 @@ const ADD_TO_CART = 'ADD_TO_CART'
 
 const initialState = {
   productList: [],
-  cartList: [],
-  // cartList: [{"id":"c7f6153d-5586-495c-beb2-4758bb8a6451","title":"Beer - Labatt Blue","image":"http://dummyimage.com/128x151.jpg/dddddd/000000","price":10,"description":"recontextualize rich eyeballs", "quantity": 3}],
+  cartList: {},
   exchangeRates: {},
   currentСurrency: ['1', '$'],
   orderByName: 1,
@@ -43,20 +42,22 @@ export default (state = initialState, action) => {
       return {
         ...state,
         productList: action.prod,
-        orderByName: action.nameOrder
+        orderByName: action.nameOrder,
+        cartList: { ...action.cart }
       }
     }
     case SORT_BY_PRICE: {
       return {
         ...state,
         productList: action.prod,
-        orderByPrice: action.priceOrder
+        orderByPrice: action.priceOrder,
+        cartList: { ...action.cart }
       }
     }
     case ADD_TO_CART: {
       return {
         ...state,
-        cartList: action.list
+        cartList: { ...action.list }
       }
     }
     default:
@@ -80,7 +81,7 @@ export function getProductList() {
 export function getExchangeRates() {
   return (dispatch) => {
     axios.get(`/api/v1/exchange_rates`).then(({ data }) => {
-      dispatch({ type: GET_RATES, rates: { ...data, USD: '1' } })
+      dispatch({ type: GET_RATES, rates: { ...data } })
     })
   }
 }
@@ -89,7 +90,17 @@ export function setCurrentCurrency(val, char) {
   return (dispatch, getState) => {
     const store = getState()
     const { exchangeRates } = store.products
+    const { currentСurrency } = store.products
     dispatch({ type: SET_CURRENCY, cur: [exchangeRates[val], char] })
+
+    axios({
+      method: 'POST',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `change currency from '${currentСurrency[1]}' to '${char}'`
+      }
+    })
   }
 }
 
@@ -97,14 +108,28 @@ export function sortByName() {
   return (dispatch, getState) => {
     const store = getState()
     const { productList } = store.products
+    const { cartList } = store.products
     const { orderByName: order } = store.products
 
-    const arraySort = (a, b) =>
+    const productListSort = (a, b) =>
       order > 0 ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
 
-    const sortedList = [...productList].sort(arraySort)
+    const cartSort = (a, b) =>
+      order > 0 ? a[1].title.localeCompare(b[1].title) : b[1].title.localeCompare(a[1].title)
 
-    dispatch({ type: SORT_BY_NAME, prod: sortedList, nameOrder: order * -1 })
+    const sortedList = [...productList].sort(productListSort)
+    const sortedCart = Object.fromEntries(Object.entries(cartList).sort(cartSort))
+
+    dispatch({ type: SORT_BY_NAME, prod: sortedList, nameOrder: order * -1, cart: sortedCart })
+
+    axios({
+      method: 'POST',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `sort by name`
+      }
+    })
   }
 }
 
@@ -112,30 +137,62 @@ export function sortByPrice() {
   return (dispatch, getState) => {
     const store = getState()
     const { productList } = store.products
+    const { cartList } = store.products
     const { orderByPrice: order } = store.products
 
-    const arraySort = (a, b) => (order > 0 ? a.price - b.price : b.price - a.price)
+    const productListSort = (a, b) => (order > 0 ? a.price - b.price : b.price - a.price)
 
-    const sortedList = [...productList].sort(arraySort)
+    const cartSort = (a, b) => (order > 0 ? a[1].price - b[1].price : b[1].price - a[1].price)
 
-    dispatch({ type: SORT_BY_PRICE, prod: sortedList, priceOrder: order * -1 })
+    const sortedList = [...productList].sort(productListSort)
+    const sortedCart = Object.fromEntries(Object.entries(cartList).sort(cartSort))
+
+    dispatch({ type: SORT_BY_PRICE, prod: sortedList, priceOrder: order * -1, cart: sortedCart })
+
+    axios({
+      method: 'POST',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `sort by price`
+      }
+    })
   }
 }
 
-export function addToCart(id) {
+export function cartAddRemove(data, action) {
   return (dispatch, getState) => {
     const store = getState()
     const { cartList } = store.products
-    const product = cartList.find((it) => it.id === id)
+    const suffix = action === 'add' ? 'to' : 'from'
 
-    if (product) {
-      const updatedCartList = cartList.map((it) => {
-        if (it.id === id) {
-          it.quantity += 1
+    if (action === 'add') {
+      if (data.id in cartList) {
+        cartList[data.id] = { ...data, quantity: (cartList[data.id].quantity += 1) }
+      } else {
+        cartList[data.id] = { ...data, quantity: 1 }
+      }
+    } else if (action === 'remove') {
+      if (data.id in cartList) {
+        if (cartList[data.id].quantity > 1) {
+          cartList[data.id] = { ...data, quantity: (cartList[data.id].quantity -= 1) }
+        } else {
+          delete cartList[data.id]
         }
-        return it
-      })
+      }
+    } else if (action === 'delete') {
+      delete cartList[data.id]
     }
+
     dispatch({ type: ADD_TO_CART, list: cartList })
+
+    axios({
+      method: 'POST',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `${action} '${data.title}' ${suffix} the cart`
+      }
+    })
   }
 }
