@@ -17,18 +17,18 @@ const Dummy = () => {
   useEffect(() => dispatch(getExchangeRates()), [dispatch])
 
   return (
-    <div>
-      <div>
-        <div>MAIN PAGE</div>
-        <div>----------------</div>
-        {productNames.map((it) => {
-          const q = it.id in productsInCart ? productsInCart[it.id].quantity : 0
-          return (
-            <div key={it.id}>
-              <ProductCard data={it} cur={currency} quan={q} />
-            </div>
-          )
-        })}
+    <div className="container my-6 mx-auto px-4 md:px-12">
+      <div className="flex flex-wrap -mx-1 lg:-mx-4">
+        <div className="grid md:grid-cols-4 gap-6 m-5 max-w-5xl m-auto sm:grid-cols-3">
+          {productNames.map((it) => {
+            const q = it.id in productsInCart ? productsInCart[it.id].quantity : 0
+            return (
+              <div key={it.id}>
+                <ProductCard data={it} cur={currency} quan={q} />
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

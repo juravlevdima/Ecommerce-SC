@@ -10,7 +10,9 @@ const MainComponent = () => {
   return (
     <div>
       <Head title="Ecommerce Store" />
-      <Header />
+      <div className="sticky top-0 z-50">
+        <Header />
+      </div>
       <Route exact path="/" component={() => <Dummy />} />
       <Route exact path="/cart" component={() => <Cart />} />
     </div>
