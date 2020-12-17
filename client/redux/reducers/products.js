@@ -165,6 +165,7 @@ export function cartAddRemove(data, action) {
     const store = getState()
     const { cartList } = store.products
     const suffix = action === 'add' ? 'to' : 'from'
+    let deleteAll = false
 
     if (action === 'add') {
       if (data.id in cartList) {
@@ -182,9 +183,12 @@ export function cartAddRemove(data, action) {
       }
     } else if (action === 'delete') {
       delete cartList[data.id]
+    } else if (action === 'delete_all') {
+      deleteAll = true
+      dispatch({ type: ADD_TO_CART, list: {} })
     }
 
-    dispatch({ type: ADD_TO_CART, list: cartList })
+    if (!deleteAll) dispatch({ type: ADD_TO_CART, list: cartList })
 
     axios({
       method: 'POST',
