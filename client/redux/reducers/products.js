@@ -104,7 +104,7 @@ export function setCurrentCurrency(val, char) {
       method: 'POST',
       url: '/api/v1/logs',
       data: {
-        time: +new Date(),
+        time: JSON.stringify(Date()),
         action: `change currency from '${currentСurrency[1]}' to '${char}'`
       }
     })
@@ -133,7 +133,7 @@ export function sortByName() {
       method: 'POST',
       url: '/api/v1/logs',
       data: {
-        time: +new Date(),
+        time: JSON.stringify(Date()),
         action: `sort by name`
       }
     })
@@ -160,7 +160,7 @@ export function sortByPrice() {
       method: 'POST',
       url: '/api/v1/logs',
       data: {
-        time: +new Date(),
+        time: JSON.stringify(Date()),
         action: `sort by price`
       }
     })
@@ -201,7 +201,7 @@ export function cartAddRemove(data, action) {
       method: 'POST',
       url: '/api/v1/logs',
       data: {
-        time: +new Date(),
+        time: JSON.stringify(Date()),
         action: `${action} '${data.title}' ${suffix} the cart`
       }
     })

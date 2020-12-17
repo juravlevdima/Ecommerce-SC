@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -19,7 +18,7 @@ const Logs = () => {
       method: 'POST',
       url: '/api/v1/logs',
       data: {
-        time: +new Date(),
+        time: JSON.stringify(Date()),
         action: `navigate to main page`
       }
     })
@@ -64,7 +63,7 @@ const Logs = () => {
       {logs.map((it) => {
         return (
           <div key={it.time} className="border-b border-gray-300 pl-10 flex space-x-20">
-            <span className="whitespace-nowrap">{Date(it.time)}</span>
+            <span className="whitespace-nowrap">{it.time}</span>
             <span className="whitespace-nowrap">{it.action}</span>
           </div>
         )

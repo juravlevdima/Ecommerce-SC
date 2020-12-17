@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import express from 'express'
 import path from 'path'
@@ -13,7 +12,7 @@ import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
-const { readFile, writeFile, stat, unlink } = require('fs').promises
+const { readFile, writeFile } = require('fs').promises
 
 const { default: Root } = require('../dist/assets/js/ssr/root.bundle')
 

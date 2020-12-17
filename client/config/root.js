@@ -1,9 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route, Redirect, StaticRouter } from 'react-router-dom'
+import axios from 'axios'
 
 import store, { history } from '../redux'
 
@@ -69,6 +70,19 @@ const RouterSelector = (props) =>
   typeof window !== 'undefined' ? <ConnectedRouter {...props} /> : <StaticRouter {...props} />
 
 const RootComponent = (props) => {
+  useEffect(
+    () =>
+      axios({
+        method: 'POST',
+        url: '/api/v1/logs',
+        data: {
+          time: JSON.stringify(Date()),
+          action: `OPEN ECOMMERCE-312-SHOP`
+        }
+      }),
+    []
+  )
+
   return (
     <Provider store={store}>
       <RouterSelector history={history} location={props.location} context={props.context}>

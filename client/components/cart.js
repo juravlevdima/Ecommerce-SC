@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { useSelector, useDispatch } from 'react-redux'

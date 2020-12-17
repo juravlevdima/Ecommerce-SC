@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { GiHamburgerMenu } from 'react-icons/gi'
 import axios from 'axios'
 import CurrencyPanel from './common/currency-panel'
 import SortPanel from './common/sort-panel'
@@ -44,7 +45,7 @@ const Header = () => {
       method: 'POST',
       url: '/api/v1/logs',
       data: {
-        time: +new Date(),
+        time: JSON.stringify(Date()),
         action: `navigate to ${url} page`
       }
     })
@@ -54,8 +55,11 @@ const Header = () => {
     <nav className="bg-gray-800 my-shadow-style">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-6">
         <div className="relative flex items-center justify-between h-16">
-          <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="sm:block sm:ml-1">
+          <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start -mx-3">
+            <div className="absolute inset-y-0 left-4 flex items-center sm:hidden text-white">
+              <GiHamburgerMenu />
+            </div>
+            <div className="hidden sm:block sm:ml-1">
               <div className="flex space-x-5">
                 <div className="flex space-x-2">
                   <Link
@@ -112,6 +116,35 @@ const Header = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="sm:hidden">
+        <div className="px-2 pt-2 pb-3 space-y-1">
+          <a
+            href="#"
+            className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Dashboard
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Team
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Projects
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Calendar
+          </a>
         </div>
       </div>
     </nav>

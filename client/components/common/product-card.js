@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import '../scss/styles.scss'
 
