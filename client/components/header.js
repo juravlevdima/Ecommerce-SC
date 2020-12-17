@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import axios from 'axios'
 import CurrencyPanel from './common/currency-panel'
 import SortPanel from './common/sort-panel'
+import Burger from './common/burger-menu'
+import SearchPanel from './common/search'
 
 import { setSearchValue } from '../redux/reducers/products'
 
@@ -12,10 +16,11 @@ import './scss/styles.scss'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const location = useLocation()
+  // const location = useLocation()
 
-  const [searchInputVisibility, setSearchVisibility] = useState(-1)
-  const [searchTitle, setSearchTitle] = useState('')
+  // const [searchInputVisibility, setSearchVisibility] = useState(-1)
+  // const [searchTitle, setSearchTitle] = useState('')
+  const [burgerButton, toggleBurgerButton] = useState(-1)
 
   const currency = useSelector((s) => s.products.currentСurrency)
   const totalInCart = useSelector((s) => Object.values(s.products.cartList)).reduce(
@@ -26,19 +31,19 @@ const Header = () => {
     .reduce((acc, it) => acc + +it.price * it.quantity * currency[0], 0)
     .toFixed(2)
 
-  const searchInputOnChange = (e) => {
-    setSearchTitle(e.target.value)
-    dispatch(setSearchValue(e.target.value))
-  }
+  // const searchInputOnChange = (e) => {
+  //   setSearchTitle(e.target.value)
+  //   dispatch(setSearchValue(e.target.value))
+  // }
 
-  const searchButtonOnClick = () => {
-    setSearchTitle('')
-    dispatch(setSearchValue(''))
-    setSearchVisibility(searchInputVisibility * -1)
-  }
+  // const searchButtonOnClick = () => {
+  //   setSearchTitle('')
+  //   dispatch(setSearchValue(''))
+  //   setSearchVisibility(searchInputVisibility * -1)
+  // }
 
   const navigate = (url) => {
-    setSearchTitle('')
+    // setSearchTitle('')
     dispatch(setSearchValue(''))
 
     axios({
@@ -57,7 +62,9 @@ const Header = () => {
         <div className="relative flex items-center justify-between h-16">
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start -mx-3">
             <div className="absolute inset-y-0 left-4 flex items-center sm:hidden text-white">
-              <GiHamburgerMenu />
+              <button type="button" onClick={() => toggleBurgerButton(burgerButton * -1)}>
+                <GiHamburgerMenu />
+              </button>
             </div>
             <div className="hidden sm:block sm:ml-1">
               <div className="flex space-x-5">
@@ -87,7 +94,8 @@ const Header = () => {
                 <div className="flex space-x-4">
                   <CurrencyPanel />
                   <SortPanel />
-                  {location.pathname !== '/cart' ? (
+                  <SearchPanel />
+                  {/* {location.pathname !== '/cart' ? (
                     <div className="flex space-x-1">
                       <button
                         type="button"
@@ -105,48 +113,21 @@ const Header = () => {
                         />
                       ) : null}
                     </div>
-                  ) : null}
-                </div>
-                <div className="origin-top-right absolute right-0 mt-3.5 w-30 text-white px-3 py-1 rounded-md text-sm font-medium">
-                  Товаров в корзине: {totalInCart}
-                </div>
-                <div className="origin-top-right absolute right-0 -mt-2.5 w-30 text-white px-3 py-1 rounded-md text-sm font-medium">
-                  Общая стоимость: {totalPrice} {currency[1]}
+                  ) : null} */}
                 </div>
               </div>
+            </div>
+            <div className="origin-top-right absolute right-0 mt-3.5 w-30 text-white px-3 py-1 rounded-md text-sm font-medium">
+              Товаров в корзине: {totalInCart}
+            </div>
+            <div className="origin-top-right absolute right-0 -mt-2.5 w-30 text-white px-3 py-1 rounded-md text-sm font-medium">
+              Общая стоимость: {totalPrice} {currency[1]}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="sm:hidden">
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <a
-            href="#"
-            className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Dashboard
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Team
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Projects
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Calendar
-          </a>
-        </div>
-      </div>
+      <div className="sm:hidden">{burgerButton > 0 ? <Burger /> : null}</div>
     </nav>
   )
 }
