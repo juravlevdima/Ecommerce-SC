@@ -108,17 +108,19 @@ const Cart = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="custom-number-input h-10 w-36">
                       <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-                        <button
-                          type="button"
-                          className="flex items-center justify-center bg-red-400 text-gray-600 hover:text-gray-900 hover:bg-red-500 h-full w-36 rounded cursor-pointer active:bg-red-600"
-                          onClick={() =>
-                            dispatch(cartAddRemove({ title: '', id: 0 }, 'delete_all'))
-                          }
-                        >
-                          <span className="m-auto font-semibold tracking-tighter">
-                            Очистить корзину
-                          </span>
-                        </button>
+                        {totalPrice > 0 ? (
+                          <button
+                            type="button"
+                            className="flex items-center justify-center bg-red-400 text-gray-600 hover:text-gray-900 hover:bg-red-500 h-full w-36 rounded cursor-pointer active:bg-red-600"
+                            onClick={() =>
+                              dispatch(cartAddRemove({ title: '', id: 0 }, 'delete_all'))
+                            }
+                          >
+                            <span className="m-auto font-semibold tracking-tighter">
+                              Очистить корзину
+                            </span>
+                          </button>
+                        ) : null}
                       </div>
                     </div>
                   </td>
