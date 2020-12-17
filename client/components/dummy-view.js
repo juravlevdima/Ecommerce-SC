@@ -9,9 +9,16 @@ import ProductCard from './common/product-card'
 const Dummy = () => {
   const dispatch = useDispatch()
 
-  const productNames = useSelector((s) => s.products.productList)
+  let productNames = useSelector((s) => s.products.productList)
   const currency = useSelector((s) => s.products.currentСurrency)
   const productsInCart = useSelector((s) => s.products.cartList)
+  const searchValue = useSelector((s) => s.products.searchValue)
+
+  if (searchValue !== '') {
+    productNames = productNames.filter((it) =>
+      it.title.toLowerCase().startsWith(searchValue.toLowerCase())
+    )
+  }
 
   useEffect(() => dispatch(getProductList()), [dispatch])
   useEffect(() => dispatch(getExchangeRates()), [dispatch])

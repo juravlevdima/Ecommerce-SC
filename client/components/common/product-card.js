@@ -14,7 +14,7 @@ const ProductCard = (props) => {
   const dispatch = useDispatch()
 
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-800 border-opacity-25 whitespace-nowrap my-shadow-style">
+    <div className="lg:w-60 md:w-40 overflow-hidden rounded-lg border border-gray-800 border-opacity-25 whitespace-nowrap my-shadow-style">
       <img alt={data.title} className="block object-cover h-64 w-full" src={data.image} />
       <div className="flex items-center justify-between leading-tight p-2">
         <div className="no-underline hover:underline text-black text-base font-semibold">

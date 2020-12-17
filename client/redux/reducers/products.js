@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
 import axios from 'axios'
 
 const GET_PRODUCTS = 'GET_PRODUCTS'
@@ -8,6 +7,7 @@ const SET_CURRENCY = 'SET_CURRENCY'
 const SORT_BY_NAME = 'SORT_BY_NAME'
 const SORT_BY_PRICE = 'SORT_BY_PRICE'
 const ADD_TO_CART = 'ADD_TO_CART'
+const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
 const initialState = {
   productList: [],
@@ -15,7 +15,8 @@ const initialState = {
   exchangeRates: {},
   currentСurrency: ['1', '$'],
   orderByName: 1,
-  orderByPrice: 1
+  orderByPrice: 1,
+  searchValue: ''
 }
 
 export default (state = initialState, action) => {
@@ -58,6 +59,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cartList: { ...action.list }
+      }
+    }
+    case SET_SEARCH_VALUE: {
+      return {
+        ...state,
+        searchValue: action.value
       }
     }
     default:
@@ -198,5 +205,11 @@ export function cartAddRemove(data, action) {
         action: `${action} '${data.title}' ${suffix} the cart`
       }
     })
+  }
+}
+
+export function setSearchValue(value) {
+  return (dispatch) => {
+    dispatch({ type: SET_SEARCH_VALUE, value })
   }
 }

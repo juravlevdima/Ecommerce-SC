@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
+import { RiDeleteBinLine } from 'react-icons/ri'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { cartAddRemove } from '../redux/reducers/products'
-import deleteIcon from './img/delete.png'
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -88,7 +88,7 @@ const Cart = () => {
                               className="flex items-center justify-center bg-red-300 text-gray-600 hover:text-gray-700 hover:bg-red-500 h-full w-24 rounded ml-2.5 cursor-pointer active:bg-red-600"
                               onClick={() => dispatch(cartAddRemove(it, 'delete'))}
                             >
-                              <img src={deleteIcon} alt="DEL" className="w-5 h-5" />
+                              <RiDeleteBinLine />
                             </button>
                           </div>
                         </div>
