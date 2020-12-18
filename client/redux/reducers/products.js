@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import axios from 'axios'
 
@@ -72,6 +73,13 @@ export default (state = initialState, action) => {
   }
 }
 
+function fromEntriesPolyfill(iterable) {
+  return [...iterable].reduce((obj, [key, val]) => {
+    obj[key] = val
+    return obj
+  }, {})
+}
+
 export function getProductList() {
   return (dispatch, getState) => {
     const store = getState()
@@ -125,7 +133,8 @@ export function sortByName() {
       order > 0 ? a[1].title.localeCompare(b[1].title) : b[1].title.localeCompare(a[1].title)
 
     const sortedList = [...productList].sort(productListSort)
-    const sortedCart = Object.fromEntries(Object.entries(cartList).sort(cartSort))
+    // const sortedCart = Object.fromEntries(Object.entries(cartList).sort(cartSort))
+    const sortedCart = fromEntriesPolyfill(Object.entries(cartList).sort(cartSort))
 
     dispatch({ type: SORT_BY_NAME, prod: sortedList, nameOrder: order * -1, cart: sortedCart })
 
@@ -152,7 +161,8 @@ export function sortByPrice() {
     const cartSort = (a, b) => (order > 0 ? a[1].price - b[1].price : b[1].price - a[1].price)
 
     const sortedList = [...productList].sort(productListSort)
-    const sortedCart = Object.fromEntries(Object.entries(cartList).sort(cartSort))
+    // const sortedCart = Object.fromEntries(Object.entries(cartList).sort(cartSort))
+    const sortedCart = fromEntriesPolyfill(Object.entries(cartList).sort(cartSort))
 
     dispatch({ type: SORT_BY_PRICE, prod: sortedList, priceOrder: order * -1, cart: sortedCart })
 
