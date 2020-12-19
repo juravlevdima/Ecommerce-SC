@@ -49,15 +49,15 @@ const Burger = () => {
       >
         Логи
       </Link>
-      <span className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+      {/* <span className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
         <SearchPanel />
-      </span>
+      </span> */}
       <span className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-        <SortPanel />
+        <SortPanel /> <CurrencyPanel />
       </span>
-      <span className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+      {/* <span className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
         <CurrencyPanel />
-      </span>
+      </span> */}
     </div>
   )
 }
