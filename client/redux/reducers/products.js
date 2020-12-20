@@ -9,11 +9,12 @@ const SORT_BY_PRICE = 'SORT_BY_PRICE'
 const ADD_TO_CART = 'ADD_TO_CART'
 const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
-const initialCartFromLocalStorage = localStorage.getItem('ecommerceCart') || '{}'
+// const initialCartFromLocalStorage = localStorage.getItem('ecommerceCart') || '{}'
 
 const initialState = {
   productList: [],
-  cartList: JSON.parse(initialCartFromLocalStorage),
+  cartList: {},
+  // cartList: JSON.parse(initialCartFromLocalStorage),
   exchangeRates: {},
   currentСurrency: ['1', '$'],
   orderByName: 1,
