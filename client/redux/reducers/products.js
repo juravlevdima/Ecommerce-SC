@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import axios from 'axios'
 
@@ -12,7 +11,7 @@ const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
 const initialState = {
   productList: [],
-  cartList: {},
+  cartList: JSON.parse(localStorage.getItem('ecommerceCart')) || {},
   exchangeRates: {},
   currentСurrency: ['1', '$'],
   orderByName: 1,
@@ -57,6 +56,7 @@ export default (state = initialState, action) => {
       }
     }
     case ADD_TO_CART: {
+      localStorage.setItem('ecommerceCart', JSON.stringify(action.list))
       return {
         ...state,
         cartList: { ...action.list }

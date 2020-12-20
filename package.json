@@ -95,6 +95,7 @@
         "react-helmet": "^6.1.0",
         "react-hot-loader": "^4.13.0",
         "react-icons": "^4.1.0",
+        "react-loading": "^2.0.3",
         "react-redux": "^7.2.2",
         "react-refresh": "^0.9.0",
         "react-router-dom": "^5.2.0",
