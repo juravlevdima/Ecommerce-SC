@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { getProductList, getExchangeRates } from '../redux/reducers/products'
+import { getProductList } from '../redux/reducers/products'
 
 import ProductCard from './common/product-card'
 
@@ -20,7 +20,6 @@ const Dummy = () => {
   }
 
   useEffect(() => dispatch(getProductList()), [dispatch])
-  useEffect(() => dispatch(getExchangeRates()), [dispatch])
 
   return (
     <div className="container my-6 mx-auto px-4 md:px-12">

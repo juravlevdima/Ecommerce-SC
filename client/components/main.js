@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
+import { getExchangeRates } from '../redux/reducers/products'
 import Head from './head'
 import Header from './header'
 import Dummy from './dummy-view'
 import Cart from './cart'
 
 const MainComponent = () => {
+  const dispatch = useDispatch()
+  useEffect(() => dispatch(getExchangeRates()), [dispatch])
+
   return (
     <div>
       <Head title="Ecommerce Store" />

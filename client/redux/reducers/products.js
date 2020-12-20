@@ -9,9 +9,7 @@ const SORT_BY_PRICE = 'SORT_BY_PRICE'
 const ADD_TO_CART = 'ADD_TO_CART'
 const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
-// const initialCartFromLocalStorage = localStorage.getItem('ecommerceCart') || '{}'
-
-const initialCartFromLocalStorage = () => {
+const getCartFromLocalStorage = () => {
   let cart
   try {
     cart = JSON.parse(localStorage.getItem('cart')) || {}
@@ -23,8 +21,7 @@ const initialCartFromLocalStorage = () => {
 
 const initialState = {
   productList: [],
-  cartList: { ...initialCartFromLocalStorage() },
-  // cartList: JSON.parse(initialCartFromLocalStorage),
+  cartList: { ...getCartFromLocalStorage() },
   exchangeRates: {},
   currentСurrency: ['1', '$'],
   orderByName: 1,
