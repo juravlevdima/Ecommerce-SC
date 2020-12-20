@@ -11,9 +11,19 @@ const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
 // const initialCartFromLocalStorage = localStorage.getItem('ecommerceCart') || '{}'
 
+const initialCartFromLocalStorage = () => {
+  let cart
+  try {
+    cart = JSON.parse(localStorage.getItem('cart')) || {}
+  } catch (e) {
+    cart = {}
+  }
+  return cart
+}
+
 const initialState = {
   productList: [],
-  cartList: {},
+  cartList: { ...initialCartFromLocalStorage() },
   // cartList: JSON.parse(initialCartFromLocalStorage),
   exchangeRates: {},
   currentСurrency: ['1', '$'],
@@ -59,7 +69,7 @@ export default (state = initialState, action) => {
       }
     }
     case ADD_TO_CART: {
-      localStorage.setItem('ecommerceCart', JSON.stringify(action.list))
+      localStorage.setItem('cart', JSON.stringify(action.list))
       return {
         ...state,
         cartList: { ...action.list }
