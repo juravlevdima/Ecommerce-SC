@@ -41,7 +41,7 @@ server.get('/api/v1/data', (req, res) => {
 
 server.get('/api/v1/exchange_rates', (req, res) => {
   axios
-    .get('https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR,CAD,RUB,USD')
+    .get('https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD,RUB')
     .then(({ data }) => {
       res.json(data.rates)
     })
@@ -78,7 +78,7 @@ server.use('/api/', (req, res) => {
 
 const [htmlStart, htmlEnd] = Html({
   body: 'separator',
-  title: 'Skillcrucial - Become an IT HERO'
+  title: 'BP'
 }).split('separator')
 
 server.get('/', (req, res) => {
